@@ -5,7 +5,7 @@ var request = require('request');
 var twitter = require('twitter');
 var spotify = require('spotify');
 var fs = require('fs');
-// var client = new Twitter();
+
 
 
 
@@ -33,47 +33,37 @@ function theGreatSwitch(){
 		case 'movie-this':
 		aMovieForMe();
 		break;
-
+s
 		case 'do-what-it-says':
 		followTheTextbook();
 		break;
 		
 	}
+	console.log("Enter a Command {my-tweets spotify-this-song movie-this or do-what-it-say}");
 };
 //functions/options
 function fetchTweets(){
     console.log("Tweets headed your way!");
-    
-	
-    
+ 
+	var client = new Twitter();
+	    
     //parameters for twitter function.
 	var parameters = {
 		screen_name: 'multishifties',
 		count: 20
 	};
 console.log(parameters);
-    //call the get method on our client variable twitter instance
-    client.get(path, params, callback);
-    client.post(path, params, callback);
-    client.stream(path, params, callback);
-
-    client.get('favorites/list', function(error, tweets, response) {
-        if(error) throw error;
-        console.log(tweets);  // The favorites.
-        console.log(response);  // Raw response object.
-      });
-console.log(tweets);
-
-	// client.get('statuses/user_timeline', parameters, function(error, tweets, response){
-	// 	if (!error) {
-	//         for (i=0; i<tweets.length; i++) {
-	//             var returnedData = ('Number: ' + (i+1) + '\n' + tweets[i].created_at + '\n' + tweets[i].text + '\n');
-	//             console.log(returnedData);
-	//             console.log("-------------------------");
-	//         }
-	//     };
-    //     console.log(tweets);
-    // });
+   
+	client.get('statuses/user_timeline', parameters, function(error, tweets, response){
+		if (!error) {
+	        for (i=0; i<tweets.length; i++) {
+	            var returnedData = ('Number: ' + (i+1) + '\n' + tweets[i].created_at + '\n' + tweets[i].text + '\n');
+	            console.log(returnedData);
+	            console.log("-------------------------");
+	        }
+	    };
+        console.log(tweets);
+    });
 };//end fetchTweets;
 
 function spotifyMe(){

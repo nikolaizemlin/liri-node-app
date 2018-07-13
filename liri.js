@@ -1,11 +1,22 @@
 //Grab data from keys.js
 require("dotenv").config();
+var fs = require('fs');
 var keys = require('./keys.js');
 var request = require('request');
-var twitter = require('twitter');
-var spotify = require('spotify');
-var fs = require('fs');
+var Twitter = require('twitter');
+var Spotify = require('node-spotify-api');
+ 
+var spotify = new Spotify({
+	id: process.env.SPOTIFY_ID,
+	secret: process.env.SPOTIFY_SECRET
+});
 
+var client = new Twitter({
+	consumer_key: keys.twitter.consumer_key,
+	consumer_secret: keys.twitter.consumer_secret,
+	access_token_key: keys.twitter.access_token_key,
+	access_token_secret: keys.twitter.access_token_secret
+  });
 
 
 
@@ -27,13 +38,13 @@ function theGreatSwitch(){
 		break;
 
 		case 'spotify-this-song':
-		spotifyMe();
+		spotifySong();
 		break;
 
 		case 'movie-this':
 		aMovieForMe();
 		break;
-s
+
 		case 'do-what-it-says':
 		followTheTextbook();
 		break;
@@ -45,33 +56,29 @@ s
 function fetchTweets(){
     console.log("Tweets headed your way!");
  
-	var client = new Twitter();
-	    
     //parameters for twitter function.
 	var parameters = {
-		screen_name: 'multishifties',
+		screen_name: '@Raziel49814043',
 		count: 20
 	};
-console.log(parameters);
+// console.log(parameters);
    
 	client.get('statuses/user_timeline', parameters, function(error, tweets, response){
 		if (!error) {
 	        for (i=0; i<tweets.length; i++) {
 	            var returnedData = ('Number: ' + (i+1) + '\n' + tweets[i].created_at + '\n' + tweets[i].text + '\n');
 	            console.log(returnedData);
-	            console.log("-------------------------");
+				console.log("-------------------------");
+				
 	        }
 	    };
-        console.log(tweets);
+        
     });
 };//end fetchTweets;
 
-function spotifyMe(){
+
+function spotifySong(){
 	console.log("Music for DAYS!");
-
-    // var spotify = new Spotify(keys.spotify);
-
-	//variable for search term, test if defined.
 	var searchTrack;
 	if(secondCommand === undefined){
 		searchTrack = "What's My Age Again?";
@@ -79,21 +86,31 @@ function spotifyMe(){
 		searchTrack = secondCommand;
 	}
 	//launch spotify search
-	spotify.search({type:'track', query:searchTrack}, function(err,data){
-	    if(err){
-	        console.log('Error occurred: ' + err);
-	        return;
-	    }else{
-	        //tried searching for release year! Spotify doesn't return this!
-	  		// console.log("Artist: " + data.tracks.items[0].artists[0].name);
-	        // console.log("Song: " + data.tracks.items[0].name);
-	        // console.log("Album: " + data.tracks.items[0].album.name);
-	        // console.log("Preview Here: " + data.tracks.items[0].preview_url);
-            console.log(data);
-        }
-	});
-    console.log(secondCommand);
-};//end spotifyMe
+	spotify
+  .search({ type: 'track', query:searchTrack })
+.then(function(response) {
+	console.log(response);
+	  if (err) {
+		return console.log("Spotify error occurred: " + err);
+	  }
+	  console.log(
+		"Here is info for the track '" +
+		  songName +
+		  "':\n-------------------------------------------------"
+	  );
+	  console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+	  console.log("Album: " + data.tracks.items[0].album.name);
+	  console.log("Play track at: " + data.tracks.items[0].external_urls.spotify);
+
+  })
+//   .catch(function(err) {
+//     console.log(err);
+//   });
+
+};
+
+
+//end spotifyMe
 
 function aMovieForMe(){
 	console.log("Netflix and Chill?");

@@ -50,7 +50,7 @@ function theGreatSwitch(){
 		break;
 		
 	}
-	console.log("Enter a Command {my-tweets spotify-this-song movie-this or do-what-it-say}");
+	console.log("Enter a Command: my-tweets spotify-this-song movie-this or do-what-it-say");
 };
 //functions/options
 function fetchTweets(){
@@ -103,9 +103,9 @@ function spotifySong(){
 	  console.log("Play track at: " + data.tracks.items[0].external_urls.spotify);
 
   })
-//   .catch(function(err) {
-//     console.log(err);
-//   });
+  .catch(function(err) {
+    console.log(err);
+  });
 
 };
 

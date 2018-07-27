@@ -11,6 +11,7 @@ var spotify = new Spotify({
 	secret: process.env.SPOTIFY_SECRET
 });
 
+
 var client = new Twitter({
 	consumer_key: keys.twitter.consumer_key,
 	consumer_secret: keys.twitter.consumer_secret,
@@ -86,26 +87,37 @@ function spotifySong(){
 		searchTrack = secondCommand;
 	}
 	//launch spotify search
-	spotify
-  .search({ type: 'track', query:searchTrack })
-.then(function(response) {
-	console.log(response);
-	  if (err) {
-		return console.log("Spotify error occurred: " + err);
-	  }
-	  console.log(
-		"Here is info for the track '" +
-		  songName +
-		  "':\n-------------------------------------------------"
-	  );
+	spotify.search({ type: 'track', query: searchTrack}, function(err, data) {
+		if (err) {
+		  return console.log('Error occurred: ' + err);
+		}
+	   
+	//   console.log(data.tracks.items); 
 	  console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
 	  console.log("Album: " + data.tracks.items[0].album.name);
 	  console.log("Play track at: " + data.tracks.items[0].external_urls.spotify);
+	  });
 
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
+// 	spotify
+//   .search({ type: 'track', query:searchTrack })
+// .then(function(err, response) {
+// 	console.log(response);
+// 	  if (err) {
+// 		return console.log("Spotify error occurred: " + err);
+// 	  }
+// 	  console.log(
+// 		"Here is info for the track '" +
+// 		  songName +
+// 		  "':\n-------------------------------------------------"
+// 	  );
+// 	  console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+// 	  console.log("Album: " + data.tracks.items[0].album.name);
+// 	  console.log("Play track at: " + data.tracks.items[0].external_urls.spotify);
+
+//   })
+//   .catch(function(err) {
+//     console.log(err);
+//   });
 
 };
 
